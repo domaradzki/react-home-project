@@ -20,6 +20,15 @@ class App extends Component {
       }
     ]
   };
+
+  changeFavorite = (e) =>{
+    this.setState({
+      users:this.state.users.map(user=>
+        user.id !== e ? user : {...user, isFavorite:!user.isFavorite}
+      )
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -33,11 +42,11 @@ class App extends Component {
           </thead>
           <tbody>
             {this.state.users.map(user => (
-              <tr key={user.id} className={user.isFavorite && "Favorite"}>
+              <tr key={user.id} className={user.isFavorite ? "Favorite" : ''}>
                 <td>{user.name}</td>
                 <td>{user.surname}</td>
                 <td>{user.phone}</td>
-                <td><button>Toggle favorite</button></td>
+                <td><button onClick={()=>this.changeFavorite(user.id)}>Toggle favorite</button></td>
               </tr>
             ))}
           </tbody>
