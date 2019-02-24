@@ -2,4 +2,7 @@
   background-color: yellow;
 }
 
-
+label {
+  min-width: 100px;
+  display: inline-block;
+}

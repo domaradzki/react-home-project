@@ -24,6 +24,21 @@ class App extends Component {
     phone:''
   };
 
+  addUser = () => {
+    this.setState({
+      users:this.state.users.concat({
+        id:this.state.users[this.state.users.length-1].id +1,
+        name:this.state.name,
+        surname:this.state.surname,
+        phone:this.state.phone,
+        isFavorite:false
+      }),
+      name: '',
+      surname: '',
+      phone: ''
+    })
+  }
+
   changeFavorite = e => {
     this.setState({
       users: this.state.users.map(user =>
@@ -42,15 +57,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <form>
+        
           <label htmlFor="name">Name</label>
           <input name="name" type="text" value={this.state.name} onChange={this.handleInputChange}/><br/>
           <label htmlFor="surname">Surname</label>
           <input name="surname" type="text" value={this.state.surname} onChange={this.handleInputChange}/><br/>
           <label htmlFor="phone">Phone</label>
           <input name="phone" type="text" value={this.state.phone} onChange={this.handleInputChange}/><br />
-          <button>Add user</button>
-        </form>
+          <button onClick={()=>this.addUser()}>Add user</button>
+        
+        <hr />
         <table>
           <thead>
             <tr>
