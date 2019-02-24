@@ -19,25 +19,26 @@ class App extends Component {
         isFavorite: true
       }
     ],
-    name:'',
-    surname:'',
-    phone:''
+    name: "",
+    surname: "",
+    phone: "",
+    editing: ""
   };
 
   addUser = () => {
     this.setState({
-      users:this.state.users.concat({
-        id:this.state.users[this.state.users.length-1].id +1,
-        name:this.state.name,
-        surname:this.state.surname,
-        phone:this.state.phone,
-        isFavorite:false
+      users: this.state.users.concat({
+        id: this.state.users[this.state.users.length - 1].id + 1,
+        name: this.state.name,
+        surname: this.state.surname,
+        phone: this.state.phone,
+        isFavorite: false
       }),
-      name: '',
-      surname: '',
-      phone: ''
-    })
-  }
+      name: "",
+      surname: "",
+      phone: ""
+    });
+  };
 
   changeFavorite = e => {
     this.setState({
@@ -49,29 +50,73 @@ class App extends Component {
 
   removeContact = e => {
     this.setState({
-      users: this.state.users.filter((contact)=>contact.id !== e)
-    })
+      users: this.state.users.filter(contact => contact.id !== e)
+    });
   };
-  handleInputChange = (event) => {
-    const value =  event.target.value;
+  handleInputChange = event => {
+    const value = event.target.value;
     const name = event.target.name;
     this.setState({
       [name]: value
     });
-  }
+  };
+  editingLabel = event => {
+    const id = event.target.id;
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState({
+      editing:value,
+      users: this.state.users.map(user =>
+        user.id !== id
+          ? user
+          : {
+            ...user,
+            [name]: value,
+          }
+      ),
+    });
+  };
+
+  handleKeyUp = event => {
+   
+    if (event.key === "Enter") {
+      event.target.parentElement.classList.toggle("editing");
+    }
+  };
+
+  toggleClass = event => {
+    event.target.parentElement.classList.toggle("editing");
+  };
 
   render() {
     return (
       <div className="App">
-        
-          <label htmlFor="name">Name</label>
-          <input name="name" type="text" value={this.state.name} onChange={this.handleInputChange}/><br/>
-          <label htmlFor="surname">Surname</label>
-          <input name="surname" type="text" value={this.state.surname} onChange={this.handleInputChange}/><br/>
-          <label htmlFor="phone">Phone</label>
-          <input name="phone" type="text" value={this.state.phone} onChange={this.handleInputChange}/><br />
-          <button onClick={()=>this.addUser()}>Add user</button>
-        
+        <label htmlFor="name">Name</label>
+        <input
+          name="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleInputChange}
+        />
+        <br />
+        <label htmlFor="surname">Surname</label>
+        <input
+          name="surname"
+          type="text"
+          value={this.state.surname}
+          onChange={this.handleInputChange}
+        />
+        <br />
+        <label htmlFor="phone">Phone</label>
+        <input
+          name="phone"
+          type="text"
+          value={this.state.phone}
+          onChange={this.handleInputChange}
+        />
+        <br />
+        <button onClick={() => this.addUser()}>Add user</button>
+
         <hr />
         <table>
           <thead>
@@ -84,9 +129,42 @@ class App extends Component {
           <tbody>
             {this.state.users.map(user => (
               <tr key={user.id} className={user.isFavorite ? "Favorite" : ""}>
-                <td>{user.name}</td>
-                <td>{user.surname}</td>
-                <td>{user.phone}</td>
+                <td onDoubleClick={this.toggleClass}>
+                  <input
+                    id={user.id}
+                    name="name"
+                    className="edit"
+                    type="text"
+                    defaultValue={user.name}
+                    onChange={this.editingLabel}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <label className="view">{user.name}</label>
+                </td>
+                <td onDoubleClick={this.toggleClass}>
+                  <input
+                    id={user.id}
+                    name="surname"
+                    className="edit"
+                    type="text"
+                    defaultValue={user.surname}
+                    onChange={this.editingLabel}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <label className="view">{user.surname}</label>
+                </td>
+                <td onDoubleClick={this.toggleClass}>
+                  <input
+                    id={user.id}
+                    name="phone"
+                    className="edit"
+                    type="text"
+                    defaultValue={user.phone}
+                    onChange={this.editingLabel}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <label className="view">{user.phone}</label>
+                </td>
                 <td>
                   <button onClick={() => this.changeFavorite(user.id)}>
                     Toggle favorite

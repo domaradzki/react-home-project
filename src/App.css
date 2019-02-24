@@ -6,3 +6,15 @@ label {
   min-width: 100px;
   display: inline-block;
 }
+
+tr td .edit {
+  display: none;
+}
+
+tr td.editing .edit {
+  display: block;
+}
+
+tr td.editing .view {
+  display: none;
+}
