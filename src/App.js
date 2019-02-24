@@ -46,6 +46,12 @@ class App extends Component {
       )
     });
   };
+
+  removeContact = e => {
+    this.setState({
+      users: this.state.users.filter((contact)=>contact.id !== e)
+    })
+  };
   handleInputChange = (event) => {
     const value =  event.target.value;
     const name = event.target.name;
@@ -84,6 +90,9 @@ class App extends Component {
                 <td>
                   <button onClick={() => this.changeFavorite(user.id)}>
                     Toggle favorite
+                  </button>
+                  <button onClick={() => this.removeContact(user.id)}>
+                    Remove contact
                   </button>
                 </td>
               </tr>
